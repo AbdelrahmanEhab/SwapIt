@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Arkit', sans-serif;
+  font-weight: bold;
+}
