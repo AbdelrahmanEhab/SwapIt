@@ -15,7 +15,7 @@ function Footer() {
                         </Link>
                     </div>
                     <div className="border-t-1 border-white w-full flex md:flex-row flex-col md:justify-between justify-center items-center py-10 gap-5">
-                        <div className="text-4xl select-none">
+                        <div className="text-4xl flex justify-center items-center select-none w-40">
                             <Link to="/">
                                 <span>SwapTO</span>
                             </Link>
@@ -23,15 +23,15 @@ function Footer() {
                         <div className="font-[400] select-none">
                             &copy; {dayjs().format('YYYY')} SwapTO. All rights reserved.
                         </div>
-                        <div className="flex flex-col items-center justify-center md:gap-1 text-[0.8rem]">
+                        <div className="flex flex-col md:items-end items-center  justify-center w-40 md:gap-1 text-[0.8rem]">
                             <Link to="/">
                                 <div className="underline">
-                                    Privacy Policy
+                                    Terms of Use
                                 </div>
                             </Link>
                             <Link to="/">
                                 <div className="underline">
-                                    Terms of Service
+                                    Privacy Policy
                                 </div>
                             </Link>
                         </div>

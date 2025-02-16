@@ -9,10 +9,10 @@ function NavBar() {
 
     return (
         <>
-            <div className="md:h-[70px] h-[60px] w-[100%] bg-blue-800 flex justify-center sticky top-0 z-50">
+            <div className="sm:h-[70px] h-[60px] w-[100%] bg-blue-800 flex justify-center sticky top-0 z-50">
                 <div className="w-full max-w-[1600px] h-full flex justify-between items-center text-white font-bold sm:px-10 px-5">
                     <Link to="/">
-                        <div className="md:text-4xl text-2xl select-none">SwapTO</div>
+                        <div className="sm:text-4xl text-2xl select-none">SwapTO</div>
                     </Link>
                     <div className="sm:flex hidden justify-between items-center gap-5 text-xl">
                         <Link to="/signup">
