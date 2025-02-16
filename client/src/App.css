@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Arkit';
+  src: url('./assets/fonts/Arkit-Bold.ttf')
+       url('./assets/fonts/Arkit-Light.ttf')
+       url('./assets/fonts/Arkit-Medium.ttf')
+       url('./assets/fonts/Arkit-Regular.ttf')
+       url('./assets/fonts/Arkit-SemiBold.ttf')
+       url('./assets/fonts/Arkit-Thin.ttf');
+  
+}
+
 body {
   font-family: 'Arkit', sans-serif;
   font-weight: bold;
