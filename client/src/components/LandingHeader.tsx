@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 
-function NavBar() {
+function LandingHeader() {
     const [nav, setNav] = useState<boolean>(false)
 
     return (
@@ -32,34 +32,34 @@ function NavBar() {
                         </div>
                     </div>
                 </div>
-            <div className={nav ? "fixed top-0 right-0 w-[50%] h-[100vh] bg-white z-51 duration-150" : "fixed top-0 right-0 w-[50%] h-[100vh] bg-white z-50 translate-x-full duration-150"}>
-                <div className="mx-4 my-5 w- h-full flex flex-col justify-start items-start gap-2">
-                    <IoMdClose size={25} className="self-end mx-2" onClick={() => setNav(!nav)}/>
-                    <Link to="/signup">
-                        <div className="bg-white text-blue-800 text-xl">
-                            Sign Up
-                        </div>
-                    </Link>
-                    <Link to="/login">
-                        <div className="bg-white text-blue-800 text-xl">
-                            Log In
-                        </div>
-                    </Link>
-                    <Link to="/">
-                        <div className="bg-white text-blue-800  text-[0.6rem] underline">
-                            Privacy Policy
-                        </div>
-                    </Link>
-                    <Link to="/">
-                        <div className="bg-white text-blue-800 text-[0.6rem] underline">
-                            Terms of Service
-                        </div>
-                    </Link>
+                <div className={nav ? "fixed top-0 right-0 w-[50%] h-[100vh] bg-white z-51 duration-150" : "fixed top-0 right-0 w-[50%] h-[100vh]  bg-white z-50 translate-x-full duration-150"}>
+                   <div className="mx-4 my-5 w- h-full flex flex-col justify-start items-start gap-2">
+                       <IoMdClose size={25} className="self-end mx-2" onClick={() => setNav(!nav)}/>
+                       <Link to="/signup">
+                           <div className="bg-white text-blue-800 text-xl">
+                               Sign Up
+                           </div>
+                       </Link>
+                       <Link to="/login">
+                           <div className="bg-white text-blue-800 text-xl">
+                               Log In
+                           </div>
+                       </Link>
+                       <Link to="/">
+                           <div className="bg-white text-blue-800  text-[0.6rem] underline">
+                               Privacy Policy
+                           </div>
+                       </Link>
+                       <Link to="/">
+                           <div className="bg-white text-blue-800 text-[0.6rem] underline">
+                               Terms of Service
+                           </div>
+                       </Link>
+                   </div>
                 </div>
-            </div>
             </div>
         </>
     )
 }
 
-export default NavBar
+export default LandingHeader

@@ -1,7 +1,7 @@
 import { ReactTyped } from "react-typed"
 import { Link } from "react-router-dom"
 
-function Hero() {
+function LandingHero() {
 
     return (
         <>
@@ -32,4 +32,4 @@ function Hero() {
     )
 }
 
-export default Hero
+export default LandingHero

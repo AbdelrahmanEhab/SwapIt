@@ -2,7 +2,7 @@ import dayjs from "dayjs"
 import { Link } from "react-router-dom"
 
 
-function Footer() {
+function LandingFooter() {
     return (
         <>
             <div className="w-full h-full flex justify-center items-center bg-blue-800 p-10">
@@ -20,7 +20,7 @@ function Footer() {
                                 <span>SwapTO</span>
                             </Link>
                         </div>
-                        <div className="font-[400] select-none">
+                        <div className="font-[400] select-none text-center">
                             &copy; {dayjs().format('YYYY')} SwapTO. All rights reserved.
                         </div>
                         <div className="flex flex-col md:items-end items-center  justify-center w-40 md:gap-1 text-[0.8rem]">
@@ -42,4 +42,4 @@ function Footer() {
     )
 }
 
-export default Footer
+export default LandingFooter
