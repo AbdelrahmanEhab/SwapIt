@@ -26,7 +26,7 @@ function SignUpForm() {
                         <label htmlFor="" className="text-xl">Password</label>
                         <input type="password" placeholder="********" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off"/>
                     </div>
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-110 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl mt-2 font-bold cursor-pointer">Sign Up</button>
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-110 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl font-bold cursor-pointer">Sign Up</button>
                     <div className="flex flex-col justify-between items-center gap-5">
                         <div className="flex sm:flex-row flex-col items-center justify-center gap-1">
                             <p>Already have an account?</p>
