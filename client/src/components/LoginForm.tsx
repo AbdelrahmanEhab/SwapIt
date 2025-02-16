@@ -4,7 +4,7 @@ function LoginForm() {
     return (
         <>
             <div className="flex justify-center items-center grow">
-                <div className="flex flex-col justify-center items-center gap-10 px-20 py-10 max-w-[1000px] w-full h-full font-light">
+                <div className="flex flex-col justify-center items-center gap-5 px-20 py-10 max-w-[1000px] w-full h-full font-light">
                     <h1 className="text-4xl font-bold">Login</h1>
                     <div className="flex flex-col items-start gap-2 w-full">
                         <label htmlFor="email" className=" text-xl">University Email</label>
