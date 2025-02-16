@@ -6,7 +6,7 @@ function LandingHero() {
     return (
         <>
             <div className="w-full h-fit flex justify-center items-center bg-cover py-25">
-                <div className="max-w-[1600px] w-full flex flex-col justify-center items-center text-blue-800 mx-10 gap-5">
+                <div className="max-w-[1240px] w-full flex flex-col justify-center items-center text-blue-800 mx-10 gap-5">
                     <h1 className="lg:text-6xl text-5xl text-blue-800 font-bold">
                         <ReactTyped 
                         strings={[

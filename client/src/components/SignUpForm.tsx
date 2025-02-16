@@ -5,8 +5,8 @@ function SignUpForm() {
 
     return (
         <>
-            <div className="w-full min-h-screen h-full lg:mt-[-70px] flex justify-center items-center">
-                <div className="flex flex-col justify-center items-center gap-10 px-20 py-10 max-w-[1000px] w-full h-full font-light">
+            <div className="flex justify-center items-center grow">
+                <div className="flex flex-col justify-center items-center gap-10 px-20 py-10 max-w-[1000px] w-full font-light">
                     <h1 className="text-4xl font-bold">Sign Up</h1>
                     <div className="flex md:flex-row flex-col md:gap-5 gap-10 w-full">
                         <div className="flex flex-col items-start gap-2 w-full">
@@ -28,7 +28,7 @@ function SignUpForm() {
                     </div>
                     <button className="bg-blue-800 text-white px-10 py-2 hover:scale-110 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl mt-2 font-bold cursor-pointer">Sign Up</button>
                     <div className="flex flex-col justify-between items-center gap-5">
-                        <div className="flex sm:flex-row flex-col items-center justify-center gap-1 ">
+                        <div className="flex sm:flex-row flex-col items-center justify-center gap-1">
                             <p>Already have an account?</p>
                             <Link to='/login' className="underline text-blue-800">Log In</Link>
                         </div>

@@ -8,7 +8,7 @@ function LandingDetails() {
     return (
         <>
             <div className="w-full h-full flex justify-center items-center">
-                <div className="max-w-[1600px] w-full h-full py-20 md:px-10 px-5 border-blue-800 border-t-1 grid gap-10">
+                <div className="max-w-[1240px] w-full h-full py-20 md:px-10 px-5 border-blue-800 border-t-1 grid gap-10">
                     <h1 className="md:text-4xl text-3xl text-blue-800 ">WHAT'S SwapTO??</h1>
                     <div className="grid md:grid-cols-5 justify-center items-center gap-10">
                         <div  className="md:col-span-2 w-full max-h-[340px] object-cover overflow-hidden">

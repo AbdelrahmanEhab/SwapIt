@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 function LoginForm() {
     return (
         <>
-            <div className="w-full min-h-screen h-full lg:mt-[-70px] flex justify-center items-center">
+            <div className="flex justify-center items-center grow">
                 <div className="flex flex-col justify-center items-center gap-10 px-20 py-10 max-w-[1000px] w-full h-full font-light">
                     <h1 className="text-4xl font-bold">Login</h1>
                     <div className="flex flex-col items-start gap-2 w-full">
