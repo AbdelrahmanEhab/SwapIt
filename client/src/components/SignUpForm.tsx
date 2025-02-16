@@ -19,8 +19,12 @@ function SignUpForm() {
                         </div>
                     </div>
                     <div className="flex flex-col items-start gap-2 w-full">
+                        <label htmlFor="telegram" className=" text-xl">Telegram Username</label>
+                        <input type="text" name="telegram" placeholder="@johndoe123" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off"/>
+                    </div>
+                    <div className="flex flex-col items-start gap-2 w-full">
                         <label htmlFor="email" className=" text-xl">University Email</label>
-                        <input type="email" name="email" placeholder="sXXXXXX@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off"/>
+                        <input type="email" name="email" placeholder="s123456@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off"/>
                     </div>
                     <div className="flex flex-col items-start w-full">
                         <label htmlFor="" className="text-xl">Password</label>
