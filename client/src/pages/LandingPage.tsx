@@ -1,7 +1,7 @@
-import Header from '../components/LandingHeader';
-import Hero from '../components/LandingHero';
-import Details from '../components/LandingDetails';
-import Footer from '../components/LandingFooter';
+import Header from '../components/Landing/LandingHeader';
+import Hero from '../components/Landing/LandingHero';
+import Details from '../components/Landing/LandingDetails';
+import Footer from '../components/Landing/LandingFooter';
 
 function LandingPage() {
 

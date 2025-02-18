@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, NavigateFunction, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -11,6 +11,7 @@ function SignUpForm() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [showPass, setshowPass] = useState<boolean>(false)
+    const nav : NavigateFunction = useNavigate();
 
     return (
         <>
@@ -46,7 +47,7 @@ function SignUpForm() {
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
                     </div>
 
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-110 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl font-bold cursor-pointer">Sign Up</button>
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-110 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl font-bold cursor-pointer" onClick={() => nav('/home/all/')}>Sign Up</button>
                     
                     <div className="flex flex-col justify-between items-center gap-5">
                         <div className="flex sm:flex-row flex-col items-center justify-center gap-1">

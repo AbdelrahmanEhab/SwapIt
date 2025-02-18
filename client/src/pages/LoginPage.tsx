@@ -1,5 +1,5 @@
-import Header from '../components/LoginHeader'
-import Form from '../components/LoginForm'
+import Header from '../components/Login/LoginHeader'
+import Form from '../components/Login/LoginForm'
 
 function LoginPage() {
 

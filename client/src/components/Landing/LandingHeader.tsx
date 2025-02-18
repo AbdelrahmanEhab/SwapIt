@@ -32,7 +32,7 @@ function LandingHeader() {
                         </div>
                     </div>
                 </div>
-                <div className={nav ? "fixed top-0 right-0 w-[50%] h-[100vh] bg-white z-51 duration-150" : "fixed top-0 right-0 w-[50%] h-[100vh]  bg-white z-50 translate-x-full duration-150"}>
+                <div className={`fixed top-0 right-0 w-[50%] h-[100vh] bg-white z-50 duration-300 ${nav ? '' : 'translate-x-full'}`}>
                    <div className="mx-4 my-5 w- h-full flex flex-col justify-start items-start gap-2">
                        <IoMdClose size={25} className="self-end mx-2 cursor-pointer" onClick={() => setNav(!nav)}/>
                        <Link to="/signup">
