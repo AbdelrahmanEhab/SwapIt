@@ -8,7 +8,7 @@ function Header() {
             <div className="sm:h-[70px] h-[60px] w-[100%] bg-blue-800 flex justify-center sticky top-0 z-50">
                 <div className="w-full max-w-[1240px] h-full flex justify-between items-center text-white font-bold sm:px-10 px-5">
                     <div>
-                        <Link to="/">
+                        <Link to="/home/all">
                             <div className="sm:text-4xl text-2xl select-none">SwapTO</div>
                         </Link>
                     </div>
