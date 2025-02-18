@@ -9,7 +9,7 @@ function LandingDetails() {
         <>
             <div className="w-full h-full flex justify-center items-center">
                 <div className="max-w-[1240px] w-full h-full py-20 md:px-10 px-5 border-blue-800 border-t-1 grid gap-10">
-                    <h1 className="md:text-4xl text-3xl text-blue-800 ">WHAT'S SwapTO??</h1>
+                    <h1 className="md:text-4xl text-3xl text-blue-800 ">WHAT'S SwapIt??</h1>
                     <div className="grid md:grid-cols-5 justify-center items-center gap-10">
                         <div  className="md:col-span-2 w-full max-h-[340px] object-cover overflow-hidden">
                             <img src={img1} alt=""/>
@@ -17,7 +17,7 @@ function LandingDetails() {
                         <div className="md:col-span-3 flex flex-col justify-self-center gap-5 w-full">
                             <h2 className="md:text-2xl text-xl">Buy and sell</h2>
                             <p className="font-light sm:text-[1.1rem] text-[1rem]">
-                                SwapTO is Torino's first student-exclusive marketplace. Our platform enables students to buy, sell, and exchange pre-loved goods within a trusted, user-verified community. By giving students a platform to repurpose their goods conveniently, we aim to create more sustainable student communities, fostering a circular economy that reduces student waste.
+                                SwapTt is Torino's first student-exclusive marketplace. Our platform enables students to buy, sell, and exchange pre-loved goods within a trusted, user-verified community. By giving students a platform to repurpose their goods conveniently, we aim to create more sustainable student communities, fostering a circular economy that reduces student waste.
                             </p>
                             <div className="flex items-self-center sm:text-[1.1rem] text-[1rem]">
                                 <BiPurchaseTag size={20}/>

@@ -17,11 +17,11 @@ function LandingFooter() {
                     <div className="border-t-1 border-white w-full flex md:flex-row flex-col md:justify-between justify-center items-center py-10 gap-5">
                         <div className="text-4xl flex justify-center items-center select-none w-40">
                             <Link to="/">
-                                <span>SwapTO</span>
+                                <span>SwapIt</span>
                             </Link>
                         </div>
                         <div className="font-[400] select-none text-center">
-                            &copy; {dayjs().format('YYYY')} SwapTO. All rights reserved.
+                            &copy; {dayjs().format('YYYY')} SwapIt. All rights reserved.
                         </div>
                         <div className="flex flex-col md:items-end items-center  justify-center w-40 md:gap-1 text-[0.8rem]">
                             <Link to="/">

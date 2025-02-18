@@ -6,13 +6,14 @@ import Products from '../components/Home/Products'
 
 function HomePage() {
 
-    const {category, query} = useParams<Record<string, string | undefined>>();
-    const [search, setSearch] = useState<string>(query ?? '')
+    const {queryCategory, querySearch} = useParams<Record<string, string | undefined>>();
+    const [search, setSearch] = useState<string>(querySearch ?? '')
+    const [category, setCategory] = useState<string>(queryCategory ?? 'all')
 
     return (
         <>
-        <Header/>
-        <Search category={category} search={search} setSearch={setSearch}/>
+        <Header setCategory={setCategory} setSearch={setSearch}/>
+        <Search category={category} search={search} setSearch={setSearch} setCategory={setCategory}/>
         <Products/>
         </>
     )
