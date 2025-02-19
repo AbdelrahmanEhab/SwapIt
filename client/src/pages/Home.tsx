@@ -14,7 +14,7 @@ function HomePage() {
         <>
         <Header setCategory={setCategory} setSearch={setSearch}/>
         <Search category={category} search={search} setSearch={setSearch} setCategory={setCategory}/>
-        <Products/>
+        <Products category={category} search={search}/>
         </>
     )
 }
