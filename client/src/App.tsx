@@ -4,6 +4,7 @@ import Landing from './pages/Landing'
 import SignUp from './pages/Signup'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Product from './pages/Product'
 
 function App() {
 
@@ -13,10 +14,8 @@ function App() {
       <Route path='/' element={<Landing/>}/>
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/login' element={<Login/>}/>
-      <Route path='/home/' element={<Home/>}/>
-      <Route path='/home/:category' element={<Home/>}/>
-      <Route path='/home/:category/:search' element={<Home/>}/>
-      <Route path='/product/:id'/>
+      <Route path='/home' element={<Home/>}/>
+      <Route path='/product/:id' element={<Product/>}/>
       <Route path='/user/:username'/>
       <Route path='*'/>
     </Routes>

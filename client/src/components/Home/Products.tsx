@@ -1,5 +1,5 @@
 import { MdOutlineFilterList } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Card from './ProductCard'
 import img from '../../assets/imgs/product1.jpg'
 import img2 from '../../assets/imgs/product2.jpg'
@@ -7,14 +7,10 @@ import img3 from '../../assets/imgs/product3.jpg'
 import img4 from '../../assets/imgs/product4.jpg'
 
 
-interface ProductsProps {
-    category: string;
-    search: string;
-}
+function Products() {
 
-function Products(props: ProductsProps) {
-
-    const {category, search} = props
+    const [searchParams, setSearchParams] = useSearchParams()
+    const {category, search} = searchParams;
 
     return (
         <>
@@ -34,9 +30,32 @@ function Products(props: ProductsProps) {
                                 Filters
                             </button>
                         </div>
-                        
                     </div>
-                    <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full">
+                    <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full relative">
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
                         <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
                         <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
                         <Card title='Sony Camera like new' price="110.00" img={img3}/>
