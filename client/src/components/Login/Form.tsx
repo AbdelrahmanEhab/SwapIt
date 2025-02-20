@@ -18,11 +18,11 @@ function LoginForm() {
                     <h1 className="text-4xl font-bold">Login</h1>
                     <div className="flex flex-col items-start gap-2 w-full">
                         <label htmlFor="email" className=" text-xl">University Email</label>
-                        <input type="email" name="email" placeholder="s123456@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="email" id="email" placeholder="s123456@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="flex flex-col items-start w-full relative">
                         <label htmlFor="password" className="text-xl">Password</label>
-                        <input type={!showPass ? "password" : 'text'} name='password' placeholder="********" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type={!showPass ? "password" : 'text'} id='password' placeholder="********" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
                         <Link to={''} className="mt-3 underline text-blue-800">Forgot Password?</Link>
                     </div>

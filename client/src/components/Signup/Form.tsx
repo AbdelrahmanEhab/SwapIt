@@ -22,28 +22,28 @@ function SignUpForm() {
 
                         <div className="flex flex-col items-start gap-2 w-full">
                             <label htmlFor="firstname" className=" text-xl">First Name</label>
-                            <input type="text" name="firstname" placeholder="John" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                            <input type="text" id="firstname" placeholder="John" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
                         </div>
 
                         <div className="flex flex-col items-start gap-2 w-full">
                             <label htmlFor="lastname" className=" text-xl">Last Name</label>
-                            <input type="text" name="lastname" placeholder="Doe" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                            <input type="text" id="lastname" placeholder="Doe" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-start gap-2 w-full">
                         <label htmlFor="telegram" className=" text-xl">Telegram Username</label>
-                        <input type="text" name="telegram" placeholder="@johndoe123" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={telegramUsername} onChange={(e) => setTelegramUsername(e.target.value)}/>
+                        <input type="text" id="telegram" placeholder="@johndoe123" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={telegramUsername} onChange={(e) => setTelegramUsername(e.target.value)}/>
                     </div>
 
                     <div className="flex flex-col items-start gap-2 w-full">
                         <label htmlFor="email" className=" text-xl">University Email</label>
-                        <input type="email" name="email" placeholder="s123456@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="email" id="email" placeholder="s123456@studenti.polito.it" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
 
                     <div className="flex flex-col items-start w-full relative">
-                        <label htmlFor="" className="text-xl">Password</label>
-                        <input type={!showPass ? "password" : 'text'} placeholder="********" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <label htmlFor="password" className="text-xl">Password</label>
+                        <input type={!showPass ? "password" : 'text'} id="password" placeholder="********" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
                     </div>
 

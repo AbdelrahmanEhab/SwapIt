@@ -43,9 +43,8 @@ function Details() {
                                   style={{ transform: `translateX(-${currentImg * 100}%)` }}
                                 >                            
                                   {images.map((image, index) => (
-                                    <a href={image} className="w-full sm:h-[500px] h-[340px] flex-shrink-0">
+                                    <a href={image} key={index} className="w-full sm:h-[500px] h-[340px] flex-shrink-0">
                                         <img
-                                        key={index}
                                         src={image}
                                         alt={`Slide ${index + 1}`}
                                         className="w-full h-full object-cover"

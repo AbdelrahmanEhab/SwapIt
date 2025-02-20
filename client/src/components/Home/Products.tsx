@@ -6,11 +6,15 @@ import img2 from '../../assets/imgs/product2.jpg'
 import img3 from '../../assets/imgs/product3.jpg'
 import img4 from '../../assets/imgs/product4.jpg'
 
+interface Params {
+    category: string;
+    search: string;
+}
 
 function Products() {
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const {category, search} = searchParams;
+    const {category, search} : Params = searchParams;
 
     return (
         <>
@@ -32,42 +36,10 @@ function Products() {
                         </div>
                     </div>
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full relative">
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
-                        <Card title='Mountaion Bike S-29' price="399.99" img={img}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img2}/>
-                        <Card title='Sony Camera like new' price="110.00" img={img3}/>
-                        <Card title='Sony WH-CH720N' price="139.99" img={img4}/>
+                        <Card title='Mountaion Bike S-29' price="399.99" img={img} key={1}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img2} key={2}/>
+                        <Card title='Sony Camera like new' price="110.00" img={img3} key={3}/>
+                        <Card title='Sony WH-CH720N' price="139.99" img={img4} key={4}/>
                     </div>
                 </div>
             </div>

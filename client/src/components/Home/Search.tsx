@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function Search() {
 
-    const [category, setCategory] = useState<string>('')
+    const [category, setCategory] = useState<string>('all')
     const [search, setSearch] = useState<string>('')
     const nav: NavigateFunction = useNavigate()
 
@@ -17,7 +17,9 @@ function Search() {
                         <div className="flex md:flex-row flex-col md:gap-0 gap-5 items-center justify-center w-full">
                             <div className="h-10 md:w-fit w-full">
 
-                                <select value={category} 
+                                <select 
+                                value={category}
+                                name="search" 
                                 onChange={(e) => {setCategory(e.target.value); setSearch(''); nav(`/home?category=${e.target.value}`)}} 
                                 className="h-full w-full text-white bg-blue-800 px-4 py-2 focus:outline-1 focus:outline-blue-800 outline-1 outline-blue-800 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-300 cursor-pointer font-light">
                                     <option value="all">All Categories</option>
