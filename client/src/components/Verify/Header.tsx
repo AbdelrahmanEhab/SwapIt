@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-function LoginHeader() {
+function VerifyHeader() {
     return (
         <>
             <div className="sm:h-[70px] h-[60px] w-full bg-blue-800 flex justify-center sticky top-0 z-50 shadow-2xl">
@@ -8,9 +8,9 @@ function LoginHeader() {
                     <Link to="/">
                         <div className="sm:text-4xl text-2xl select-none">SwapIt</div>
                     </Link>
-                    <Link to="/login">
+                    <Link to="/">
                         <div className="bg-white text-blue-800 px-3 py-1 hover:scale-110 hover:bg-blue-800 hover:text-white hover:outline hover:outline-white duration-200 sm:text-xl">
-                            Log In
+                            What's SwapIt
                         </div>
                     </Link>
                 </div>
@@ -19,4 +19,4 @@ function LoginHeader() {
     )
 }
 
-export default LoginHeader
+export default VerifyHeader

@@ -16,7 +16,7 @@ function SignUpForm() {
     return (
         <>
             <div className="flex justify-center items-center grow select-none">
-                <div className="flex flex-col justify-center items-center gap-5 px-20 py-10 max-w-[1000px] w-full h-full font-light">
+                <div className="flex flex-col justify-center items-center gap-5 md:px-20 px-5 py-10 max-w-[1000px] w-full h-full font-light">
                     <h1 className="text-4xl font-bold">Sign Up</h1>
                     <div className="flex md:flex-row flex-col gap-5 w-full">
 
@@ -47,7 +47,7 @@ function SignUpForm() {
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
                     </div>
 
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-105 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 text-xl font-bold cursor-pointer" onClick={() => nav('/home')}>Sign Up</button>
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-105 duration-200 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 text-xl font-bold cursor-pointer w-50" onClick={() => nav(`/verify?email=${email.split('@')[0]}`)}>Sign Up</button>
                     
                     <div className="flex flex-col justify-between items-center gap-5">
                         <div className="flex sm:flex-row flex-col items-center justify-center gap-1">
