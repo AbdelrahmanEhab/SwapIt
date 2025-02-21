@@ -1,6 +1,6 @@
 import Header from '../components/User/Header'
 import Details from '../components/User/Details'
-import History from '../components/User/History'
+import ScrollCards from '../components/User/ScrollCards'
 
 function UserPage() {
 
@@ -8,7 +8,8 @@ function UserPage() {
         <>
         <Header/>
         <Details/>
-        <History/>
+        <ScrollCards title='History'/>
+        <ScrollCards title='Favourites'/>
         </>
     )
 }

@@ -74,12 +74,17 @@ function Details() {
                                     </div>
                                 </div>
                             </div>
-                            <a href="" target="_blank"  className="2xl:w-fit w-full">
-                                <div className="flex items-center justify-center gap-2 font-medium px-4 py-2 text-white bg-blue-800 hover:outline-1 hover:outline-blue-800 hover:text-blue-800 hover:bg-white hover:scale-105 duration-300">
-                                    <p>Contact</p>
-                                    <FaTelegramPlane/>
-                                </div>
-                            </a>
+                            <div className="flex flex-col w-full gap-2">
+                                <a href="" target="_blank"  className="2xl:w-fit w-full">
+                                    <div className="flex items-center justify-center gap-2 font-medium px-4 py-2 text-white bg-blue-800 hover:outline-1     hover:outline-blue-800 hover:text-blue-800 hover:bg-white hover:scale-105 duration-300">
+                                        <p>Contact</p>
+                                        <FaTelegramPlane/>
+                                    </div>
+                                </a>
+                                <button className="flex items-center justify-center gap-2 font-medium px-4 py-2 text-white bg-blue-800 hover:outline-1  hover:outline-blue-800 hover:text-blue-800 hover:bg-white hover:scale-105 duration-300 2xl:w-fit w-full cursor-pointer">
+                                    Add to Favourites
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
