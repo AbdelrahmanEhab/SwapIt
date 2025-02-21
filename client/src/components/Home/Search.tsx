@@ -21,7 +21,7 @@ function Search() {
                                 value={category}
                                 name="search" 
                                 onChange={(e) => {setCategory(e.target.value); setSearch(''); nav(`/home?category=${e.target.value}`)}} 
-                                className="h-full w-full text-white bg-blue-800 px-4 py-2 focus:outline-1 focus:outline-blue-800 outline-1 outline-blue-800 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-300 cursor-pointer font-light">
+                                className="h-full w-full text-white bg-blue-800 px-4 py-2 focus:outline-1 focus:outline-blue-800 outline-1 outline-blue-800 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 cursor-pointer font-light">
                                     <option value="all">All Categories</option>
                                     <option value="electronics">Electronics</option>
                                     <option value="home-and-appliances">Home & Appliances</option>
@@ -41,7 +41,7 @@ function Search() {
 
 
                                     <Link to={`/home?category=${category}&search=${search}`}>
-                                        <div className="absolute top-0 right-0 h-full flex justify-center items-center bg-blue-800 text-white px-5 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-300">
+                                        <div className="absolute top-0 right-0 h-full flex justify-center items-center bg-blue-800 text-white px-5 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200">
                                         <IoSearchSharp size={20}/>
                                         </div>
                                     </Link>
