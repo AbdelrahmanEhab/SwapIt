@@ -8,7 +8,7 @@ function UserPage() {
         <>
         <Header/>
         <Details/>
-        <ScrollCards title='History'/>
+        <ScrollCards title='Posted Items'/>
         <ScrollCards title='Favourites'/>
         </>
     )

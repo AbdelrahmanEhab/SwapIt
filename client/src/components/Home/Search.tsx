@@ -10,7 +10,7 @@ function Search() {
 
     return (
         <>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center w-full">
                 <div className="w-full max-w-[1240px] h-full flex flex-col justify-center items-center md:py-15 pt-15 px-5">
                     <div className="w-full flex flex-col justify-center items-center gap-10">
                         <h1 className="text-center lg:text-3xl text-2xl select-none font-bold">What are you looking for?</h1>

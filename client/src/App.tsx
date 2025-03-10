@@ -8,6 +8,7 @@ import Verify from './pages/Verify'
 import Home from './pages/Home'
 import Product from './pages/Product'
 import User from './pages/User'
+import Post from './pages/Post'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <Route path='/home' element={<Home/>}/>
       <Route path='/product/:id' element={<Product/>}/>
       <Route path='/user/:username' element={<User/>}/>
+      <Route path='/post' element={<Post/>}/>
       <Route path='*'/>
     </Routes>
     </>

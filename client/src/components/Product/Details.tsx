@@ -1,22 +1,38 @@
 import { FaAngleDoubleLeft, FaTelegramPlane  } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiStarFill } from "react-icons/ri";
-import img from '../../assets/imgs/product1.jpg'
-import img2 from '../../assets/imgs/product2.jpg'
-import img3 from '../../assets/imgs/product3.jpg'
-import img4 from '../../assets/imgs/product4.jpg'
+import { useParams } from "react-router-dom";
 
 
-const imgs = [img, img2, img3, img4]
+async function fetchProduct(id: string | null) {
+    const response = await fetch(`https://fakestoreapi.com/products/${id}`)
+    return response.json()
+}
 
 function Details() {
 
+    const {id} = useParams();
     const [currentImg, setCurrentImg] = useState<number>(0)
-    const [title, setTitle] = useState<string>('Title')
-    const [description, setDescription] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum exercitationem quaerat et deserunt eos, cum autem perferendis expedita nulla repellendus illo repudiandae laborum dolorum rem sed eum qui voluptatum error!')
-    const [price, setPrice] = useState<number>(199.99)
-    const [images, setImages] = useState<string[]>(imgs)
+    const [title, setTitle] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [price, setPrice] = useState<number>(0)
+    const [images, setImages] = useState<string[]>([])
     const [username, setUsername] = useState<string>('username')
+    const [loading, setLoading] = useState<boolean>(true)
+
+    useEffect(() => {
+        async function getProduct() {
+            setLoading(true)
+            const product = await fetchProduct(id)
+            setTitle(product.title)
+            setDescription(product.description)
+            setPrice(product.price)
+            setImages([product.image, product.image, product.image, product.image])
+            setLoading(false)
+        }
+        getProduct()
+    }, [id])
+
 
 
     const prevImage = () : void => setCurrentImg((currentImg - 1 + images.length) % images.length)
@@ -25,15 +41,22 @@ function Details() {
 
     return (
         <>
-            <div className="grow flex justify-center items-center w-full h-full px-5 py-10">
+            {loading ? (
+                <div className="grow flex justify-center items-center w-full h-full px-5 py-10">
+                    <div className="w-full max-w-[1240px] h-full flex items-center justify-center">
+                        <div>loading</div>
+                    </div>
+                </div>
+            ) : (
+                <div className="grow flex justify-center items-center w-full h-full px-5 py-10">
                 <div className="w-full max-w-[1240px] h-full flex items-center justify-center">
-                    <div className="grid 2xl:grid-cols-2 justify-center items-start gap-8 w-full">
-                        <div className='relative'>
-                            <button className='absolute text-white font-light top-[50%] translate-y-[-50%] left-0 px-5 h-full cursor-pointer hover:scale-115 duration-200 z-10'
+                    <div className="grid 2xl:grid-cols-2 justify-center items-start gap-8">
+                        <div className='relative px-15'>
+                            <button className='absolute text-black font-light top-[50%] translate-y-[-50%] left-0 px-5 h-full cursor-pointer hover:scale-115 duration-200 z-10'
                             onClick={prevImage}>
                                 <FaAngleDoubleLeft size={30}/>
                             </button>
-                            <button className='absolute text-white font-light top-[50%] translate-y-[-50%] right-0 px-5 h-full cursor-pointer rotate-180 hover:scale-115 duration-200 z-10'
+                            <button className='absolute text-black font-light top-[50%] translate-y-[-50%] right-0 px-5 h-full cursor-pointer rotate-180 hover:scale-115 duration-200 z-10'
                             onClick={nextImage}>
                                 <FaAngleDoubleLeft size={30}/>
                             </button>
@@ -47,14 +70,14 @@ function Details() {
                                         <img
                                         src={image}
                                         alt={`Slide ${index + 1}`}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-contain"
                                     />
                                     </a>
                                   ))}
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-col items-start font-light gap-5 my-auto'>
+                        <div className='flex flex-col items-start font-light gap-5 mt-20'>
                             <h1 className='font-medium text-3xl break-all'>{title}</h1>
                             <p>{description}</p>
                             <h3 className="text-3xl font-medium">{price + ' €'}</h3>
@@ -89,6 +112,7 @@ function Details() {
                     </div>
                 </div>
             </div>
+            )}
         </>
     )
 }

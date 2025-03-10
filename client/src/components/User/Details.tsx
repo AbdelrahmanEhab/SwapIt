@@ -51,7 +51,7 @@ function UserDetails() {
                                     Update Profile
                                 </button>
 
-                                <button className='flex items-center justify-center text-white bg-blue-800 px-4 hover:outline-1 hover:outline-blue-800 hover:text-blue-800 hover:bg-white cursor-pointer hover:scale-105 duration-200'>
+                                <button className='flex items-center justify-center px-4 text-white bg-blue-800 hover:outline-1 hover:outline-blue-800 hover:text-blue-800 hover:bg-white cursor-pointer hover:scale-105 duration-200'>
                                 <FaEdit size={15} className='me-2 mb-1'/>
                                 Edit Picture
                                 </button>
