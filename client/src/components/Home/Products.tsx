@@ -1,4 +1,5 @@
 import { MdOutlineFilterList } from "react-icons/md";
+import { IoArrowDownOutline, IoArrowUpOutline } from "react-icons/io5";
 import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from './Card'
@@ -12,6 +13,8 @@ type Product = {
     title: string;
 }
 
+type Filter = "Default" | "Asc" | "Desc";
+
 async function fetchProducts() {
     const response = await fetch('https://fakestoreapi.com/products')
     return response.json()
@@ -24,6 +27,7 @@ function Products() {
     const search = searchParams.get("search") || "";
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true)
+    const [filter, setFilter] = useState<Filter>("Asc")
 
     useEffect(() => {
         async function getProducts() {
@@ -33,6 +37,14 @@ function Products() {
         }
         getProducts();
     }, [])
+
+    const handleFilter = () : void => {
+        setFilter(f => {
+            if (f == 'Default') return 'Asc'
+            if (f == 'Asc') return 'Desc'
+            return 'Default'
+        })
+    }
 
     return (
         <>
@@ -57,18 +69,47 @@ function Products() {
                                         Post Item
                                     </div>
                                 </Link>
-                                <button className="h-10 md:grow-0 grow bg-blue-800 text-white px-4 py-2 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200  cursor-pointer">
-                                    <MdOutlineFilterList size={20} className="inline me-1"/>
-                                    Filters
+
+                                <button className="h-10 md:grow-0 grow bg-blue-800 text-white ps-4 pe-6 py-2 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200  cursor-pointer w-28" onClick={handleFilter}>
+
+                                { filter === "Default" &&
+                                    <div>
+                                        <MdOutlineFilterList size={20} className="inline me-1"/>
+                                        Filters
+                                    </div>
+                                }
+                                { filter === "Asc" &&
+                                    <div>
+                                        <IoArrowDownOutline size={20} className="inline me-1"/>
+                                        Price
+                                    </div>
+                                }
+                                { filter === "Desc" &&
+                                    <div>
+                                        <IoArrowUpOutline size={20} className="inline me-1"/>
+                                        Price
+                                    </div>
+                                }
+
                                 </button>
                             </div>
                         </div>
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full relative">
-                        {
-                        products.map(p => (
+                        { filter === "Default" &&
+                            products.map(p => (
                                 <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
-                        ))
-                            }
+                            ))
+                        }
+                        { filter === "Asc" &&
+                            [...products].sort((a, b) => a.price - b.price).map(p => (
+                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
+                            ))
+                        }
+                        { filter === "Desc" &&
+                            [...products].sort((a, b) => b.price - a.price).map(p => (
+                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
+                            ))
+                        }
                         </div>
                     </div>
                 </div>
