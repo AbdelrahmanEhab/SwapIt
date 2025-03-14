@@ -10,7 +10,7 @@ interface CardProps {
 
 function Card(props: CardProps) {
 
-    const {img, title, price, state} = props
+    const {img, title, price, state} : CardProps = props
     const [sold, setSold] = useState<boolean>(false)
 
     return (
