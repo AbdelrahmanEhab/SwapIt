@@ -50,7 +50,7 @@ function Details() {
             ) : (
                 <div className="grow flex justify-center items-center w-full h-full px-5 py-10">
                 <div className="w-full max-w-[1240px] h-full flex items-center justify-center">
-                    <div className="grid 2xl:grid-cols-2 justify-center items-start gap-8">
+                    <div className="grid 2xl:grid-cols-2 justify-center items-start 2xl:gap-8 md:gap-15 sm:gap-10 gap-5">
                         <div className='relative px-15'>
                             <button className='absolute text-black font-light top-[50%] translate-y-[-50%] left-0 px-5 h-full cursor-pointer hover:scale-115 duration-200 z-10'
                             onClick={prevImage}>
@@ -77,7 +77,7 @@ function Details() {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-col items-start font-light gap-5 mt-20'>
+                        <div className='flex flex-col items-start font-light gap-5 2xl:mt-20 '>
                             <h1 className='font-medium text-3xl break-all'>{title}</h1>
                             <p>{description}</p>
                             <h3 className="text-3xl font-medium">{price + ' €'}</h3>

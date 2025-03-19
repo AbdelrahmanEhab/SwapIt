@@ -1,6 +1,6 @@
 import { MdOutlineFilterList } from "react-icons/md";
 import { IoArrowDownOutline, IoArrowUpOutline } from "react-icons/io5";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from './Card'
 
@@ -13,6 +13,11 @@ type Product = {
     title: string;
 }
 
+interface searchProps {
+    category: string;
+    search: string;
+}
+
 type Filter = "Default" | "Asc" | "Desc";
 
 async function fetchProducts() {
@@ -20,23 +25,33 @@ async function fetchProducts() {
     return response.json()
 }
 
-function Products() {
+function Products(props: searchProps) {
 
-    const [searchParams] = useSearchParams()
-    const category = searchParams.get("category") || "";
-    const search = searchParams.get("search") || "";
+    const {search, category} = props
     const [products, setProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [filter, setFilter] = useState<Filter>("Asc")
 
     useEffect(() => {
         async function getProducts() {
             const productsData = await fetchProducts();
-            setProducts([...productsData, ...productsData]);
+            setProducts([...productsData]);
+            setFilteredProducts([...productsData])
             setLoading(false)
         }
         getProducts();
     }, [])
+
+    useEffect(() => {
+        setFilteredProducts([...products].filter((product) => {
+            const term = search.toLocaleLowerCase();
+            const nameMatch = product.title.toLocaleLowerCase().includes(term);
+            const descriptionMatch = product.description ? product.description.toLocaleLowerCase().includes(term) : false;
+
+            return nameMatch || descriptionMatch
+        }))
+    }, [search, products])
 
     const handleFilter = () : void => {
         setFilter(f => {
@@ -58,9 +73,9 @@ function Products() {
                 ) 
                 :
                 (
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center w-full h-full">
                     <div className="w-full max-w-[1240px] px-5 py-5">
-                        <div className="flex md:flex-row flex-col-reverse md:gap-0 gap-5 justify-between items-center">
+                        <div className="flex md:flex-row flex-col-reverse md:gap-0 gap-5 justify-between items-center w-full h-full">
                             <h2 className="md:text-3xl text-2xl font-medium">Products</h2>
                             <div className="flex gap-2 font-light md:w-fit w-full">
                                 <Link to='/post' className="md:grow-0 grow">
@@ -90,25 +105,31 @@ function Products() {
                                         Price
                                     </div>
                                 }
-
                                 </button>
                             </div>
                         </div>
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full relative">
                         { filter === "Default" &&
-                            products.map(p => (
+                            [...filteredProducts].map(p => (
                                 <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
                             ))
                         }
                         { filter === "Asc" &&
-                            [...products].sort((a, b) => a.price - b.price).map(p => (
+                            [...filteredProducts].sort((a, b) => a.price - b.price).map(p => (
                                 <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
                             ))
                         }
                         { filter === "Desc" &&
-                            [...products].sort((a, b) => b.price - a.price).map(p => (
+                            [...filteredProducts].sort((a, b) => b.price - a.price).map(p => (
                                 <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
                             ))
+                        }
+                        {
+                            filteredProducts.length === 0 && products.length !== 0 && (
+                                <div className="text-black font-light text-3xl col-span-3 mt-25 text-center">
+                                    Oops, looks like there is no matched products
+                                </div>
+                            )
                         }
                         </div>
                     </div>

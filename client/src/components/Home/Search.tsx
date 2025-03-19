@@ -1,11 +1,15 @@
-import { Link, useNavigate, NavigateFunction } from "react-router-dom"
-import { IoSearchSharp } from "react-icons/io5";
-import { useState } from "react";
+import { useNavigate, NavigateFunction } from "react-router-dom"
 
-function Search() {
+interface searchProps {
+    setCategory: React.Dispatch<React.SetStateAction<string>>;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    category: string;
+    search: string;
+}
 
-    const [category, setCategory] = useState<string>('all')
-    const [search, setSearch] = useState<string>('')
+function Search(props: searchProps) {
+    
+    const {setCategory, setSearch, category, search} = props
     const nav: NavigateFunction = useNavigate()
 
     return (
@@ -21,7 +25,7 @@ function Search() {
                                 value={category}
                                 name="search" 
                                 onChange={(e) => {setCategory(e.target.value); setSearch(''); nav(`/home?category=${e.target.value}`)}} 
-                                className="h-full w-full text-white bg-blue-800 px-4 py-2 focus:outline-1 focus:outline-blue-800 outline-1 outline-blue-800 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 cursor-pointer font-light">
+                                className="h-full w-full text-white bg-blue-800 px-4 py-2 focus:outline-1 focus:outline-blue-800 outline-1 outline-blue-800 cursor-pointer font-light">
                                     <option value="all">All Categories</option>
                                     <option value="electronics">Electronics</option>
                                     <option value="home-and-appliances">Home & Appliances</option>
@@ -32,19 +36,10 @@ function Search() {
                                 </select>
                             </div>
                             <div className="flex justify-center items-center relative outline-1 outline-blue-800 grow h-10 md:w-fit w-full">
-                                    
                                     <input type="text" name="search" placeholder='Search...' 
                                     className="bg-white text-black w-full h-full px-4 py-2 font-medium focus:outline-0" 
-                                    value={search} onChange={(e) => setSearch(e.target.value)} 
-                                    onKeyDown={(e) => {if (e.key === "Enter") {nav(`/home?category=${category}&search=${search}`)}}} 
+                                    value={search} onChange={(e) => setSearch(e.target.value)}
                                     autoComplete="off"/>
-
-
-                                    <Link to={`/home?category=${category}&search=${search}`}>
-                                        <div className="absolute top-0 right-0 h-full flex justify-center items-center bg-blue-800 text-white px-5 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200">
-                                        <IoSearchSharp size={20}/>
-                                        </div>
-                                    </Link>
                             </div>
                         </div>                                
                     </div>
