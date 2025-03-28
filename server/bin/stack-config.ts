@@ -1,45 +1,49 @@
 import { ICdkTsApiGatewayStackProps } from './stack-config-types';
 
+/**
+ * Environment configuration for the CDK stack
+ */
 const environmentConfig: ICdkTsApiGatewayStackProps = {
   tags: {
-    Developer: 'Abdelrahman Ahmed',
+    Project: 'SwapIt',
+    Environment: process.env.NODE_ENV || 'development',
     Application: 'SwapItApiGateway',
   },
   lambda: {
-    desc: 'Lambda resolver used for Api Gateway',
-    memory: 256,
+    desc: 'Lambda function for SwapIt API',
+    memory: 512, // Increased for better performance
     timeout: 30,
   },
   api: {
     name: 'SwapIt-API',
-    desc: 'Rest API for SwapIt marketplace',
-    modelName: 'DemoModel',
+    desc: 'REST API for SwapIt marketplace',
+    modelName: 'SwapItModel',
     rootResource: 'v1',
   },
   usageplan: {
-    name: 'demo-usage-plan',
-    desc: 'Usage plan used for Api Gateway',
-    limit: 100, // per day
-    rateLimit: 20,
-    burstLimit: 10,
+    name: 'swapit-usage-plan',
+    desc: 'Usage plan for SwapIt API',
+    limit: 10000, // Daily request limit
+    rateLimit: 50,  // Requests per second
+    burstLimit: 100, // Maximum concurrent requests
   },
   apiKey: {
-    name: 'api-key',
-    desc: 'Api Key',
+    name: 'swapit-api-key',
+    desc: 'API Key for SwapIt API authentication',
   },
   validators: {
     bodyValidator: {
-        requestValidatorName: 'demo-body-validator',
+        requestValidatorName: 'body-validator',
         validateRequestBody: true,
         validateRequestParameters: false,
     },
     paramValidator: {
-        requestValidatorName: 'demo-param-validator',
+        requestValidatorName: 'param-validator',
         validateRequestBody: false,
         validateRequestParameters: true,
     },
     bodyAndParamValidator: {
-        requestValidatorName: 'demo-body-and-param-validator',
+        requestValidatorName: 'body-and-param-validator',
         validateRequestBody: true,
         validateRequestParameters: true,
     },

@@ -1,64 +1,55 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
-import * as jwt from 'jsonwebtoken';
+import { handleError, handleSuccess, handleOptions, verifyToken } from './utils';
 
 const dynamodb = new DynamoDB.DocumentClient();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const USERS_TABLE = process.env.USERS_TABLE || 'users';
 
-const verifyAdminToken = async (token: string): Promise<{ email: string; isAdmin: boolean } | null> => {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { email: string; isAdmin: boolean };
-    if (!decoded.isAdmin) {
-      return null;
-    }
-    return decoded;
-  } catch (error) {
-    return null;
+const verifyAdminToken = async (token: string): Promise<boolean> => {
+  const decoded = verifyToken(token);
+  if (!decoded || !decoded.isAdmin) {
+    return false;
   }
+  return true;
 };
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  console.log('Event:', JSON.stringify(event, null, 2));
+
   try {
     const method = event.httpMethod;
     const path = event.path;
     const token = event.headers.Authorization?.split(' ')[1];
     
-    if (!token) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'No token provided' })
-      };
+    // Handle OPTIONS requests for CORS
+    if (method === 'OPTIONS') {
+      return handleOptions();
     }
 
-    const decoded = await verifyAdminToken(token);
-    if (!decoded) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: 'Admin access required' })
-      };
+    if (!token) {
+      return handleError(new Error('No token provided'), 401);
+    }
+
+    const isAdmin = await verifyAdminToken(token);
+    if (!isAdmin) {
+      return handleError(new Error('Admin access required'), 403);
     }
 
     // Get admin status
     if (method === 'GET' && path.endsWith('/admin')) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ isAdmin: true })
-      };
+      return handleSuccess({ isAdmin: true });
     }
 
     // Get all users (admin only)
     if (method === 'GET' && path.endsWith('/admin/users')) {
       const params = {
-        TableName: 'users',
-        ProjectionExpression: 'email, isAdmin, createdAt'
+        TableName: USERS_TABLE,
+        ProjectionExpression: 'email, firstName, lastName, telegramUsername, isAdmin, createdAt'
       };
 
       const result = await dynamodb.scan(params).promise();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ users: result.Items })
-      };
+      return handleSuccess({ users: result.Items });
     }
 
     // Delete user (admin only)
@@ -66,38 +57,33 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       const userId = path.split('/').pop();
       
       if (!userId) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ message: 'User ID is required' })
-        };
+        return handleError(new Error('User ID is required'), 400);
       }
 
       const params = {
-        TableName: 'users',
+        TableName: USERS_TABLE,
         Key: { email: userId }
       };
 
       await dynamodb.delete(params).promise();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'User deleted successfully' })
-      };
+      return handleSuccess({ message: 'User deleted successfully' });
     }
 
     // Assign user as admin
     if (method === 'POST' && path.endsWith('/admin')) {
-      const { email } = JSON.parse(event.body || '{}');
+      if (!event.body) {
+        return handleError(new Error('Request body is required'), 400);
+      }
+
+      const { email } = JSON.parse(event.body);
       
       if (!email) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ message: 'Email is required' })
-        };
+        return handleError(new Error('Email is required'), 400);
       }
 
       const params = {
-        TableName: 'users',
+        TableName: USERS_TABLE,
         Key: { email },
         UpdateExpression: 'SET isAdmin = :isAdmin',
         ExpressionAttributeValues: {
@@ -107,21 +93,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
       await dynamodb.update(params).promise();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'User assigned as admin successfully' })
-      };
+      return handleSuccess({ message: 'User assigned as admin successfully' });
     }
 
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: 'Method not allowed' })
-    };
+    return handleError(new Error('Method not allowed'), 405);
   } catch (error) {
-    console.error('Error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Internal server error' })
-    };
+    return handleError(error);
   }
 }; 

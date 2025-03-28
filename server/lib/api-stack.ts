@@ -16,147 +16,213 @@ export class ApiStack extends cdk.Stack {
     const api = new apigateway.RestApi(this, 'RestAPI', {
         restApiName: props.api.name,
         description: props.api.desc,
+        binaryMediaTypes: ['*/*'],
         defaultCorsPreflightOptions: {
-            allowOrigins: apigateway.Cors.ALL_ORIGINS, // to be set to my website only
-            allowMethods: ['GET', 'POST', 'PATCH', 'DELETE']
+            allowOrigins: apigateway.Cors.ALL_ORIGINS,
+            allowMethods: apigateway.Cors.ALL_METHODS,
+            allowHeaders: [
+                'Content-Type',
+                'X-Amz-Date',
+                'Authorization',
+                'X-Api-Key',
+                'X-Amz-Security-Token',
+                'Access-Control-Allow-Origin',
+                'Access-Control-Allow-Headers',
+                'Access-Control-Allow-Methods',
+                'Accept',
+                'Origin',
+                'Host',
+                'Referer',
+                'User-Agent'
+            ],
+            allowCredentials: true,
+            maxAge: cdk.Duration.days(1),
         },
-    })
+        deployOptions: {
+            stageName: 'prod',
+            tracingEnabled: true,
+            dataTraceEnabled: true,
+            metricsEnabled: true,
+            loggingLevel: apigateway.MethodLoggingLevel.INFO,
+        },
+    });
 
+    // Enable CloudWatch logging
+    const logGroup = new cdk.aws_logs.LogGroup(this, 'ApiGatewayLogs', {
+        retention: cdk.aws_logs.RetentionDays.ONE_WEEK,
+    });
+
+    // Response Models
+    const errorModel = api.addModel('ErrorResponse', {
+        contentType: 'application/json',
+        modelName: 'ErrorResponse',
+        schema: {
+            type: apigateway.JsonSchemaType.OBJECT,
+            properties: {
+                message: { type: apigateway.JsonSchemaType.STRING },
+                errorType: { type: apigateway.JsonSchemaType.STRING },
+            },
+        },
+    });
+
+    const successModel = api.addModel('SuccessResponse', {
+        contentType: 'application/json',
+        modelName: 'SuccessResponse',
+        schema: {
+            type: apigateway.JsonSchemaType.OBJECT,
+            properties: {
+                message: { type: apigateway.JsonSchemaType.STRING },
+                data: { type: apigateway.JsonSchemaType.OBJECT },
+            },
+        },
+    });
+
+    // Method Response Models
+    const methodResponses: apigateway.MethodResponse[] = [
+        {
+            statusCode: '200',
+            responseModels: {
+                'application/json': successModel,
+            },
+        },
+        {
+            statusCode: '400',
+            responseModels: {
+                'application/json': errorModel,
+            },
+        },
+        {
+            statusCode: '401',
+            responseModels: {
+                'application/json': errorModel,
+            },
+        },
+        {
+            statusCode: '403',
+            responseModels: {
+                'application/json': errorModel,
+            },
+        },
+        {
+            statusCode: '404',
+            responseModels: {
+                'application/json': errorModel,
+            },
+        },
+        {
+            statusCode: '500',
+            responseModels: {
+                'application/json': errorModel,
+            },
+        },
+    ];
+
+    // Request Validators
     const createValidator = (input: IValidators) => new apigateway.RequestValidator(
-      this,
-      input.requestValidatorName,
-      {
-        restApi: api,
-        requestValidatorName: input.requestValidatorName,
-        validateRequestBody: input.validateRequestBody,
-        validateRequestParameters: input.validateRequestParameters
-      },
+        this,
+        input.requestValidatorName,
+        {
+            restApi: api,
+            requestValidatorName: input.requestValidatorName,
+            validateRequestBody: input.validateRequestBody,
+            validateRequestParameters: input.validateRequestParameters,
+        },
     );
 
-    const bodyValidator = createValidator(props.validators.bodyValidator)
-    const paramValidator = createValidator(props.validators.paramValidator)
-    const bodyAndParamValidator = createValidator(props.validators.bodyAndParamValidator)
+    const bodyValidator = createValidator(props.validators.bodyValidator);
+    const paramValidator = createValidator(props.validators.paramValidator);
+    const bodyAndParamValidator = createValidator(props.validators.bodyAndParamValidator);
 
-    
     // Root Resource
-    const rootResource = api.root.addResource(props.api.rootResource)
+    const rootResource = api.root.addResource(props.api.rootResource);
     
     // Endpoint Resources
-    const usersResource = rootResource.addResource('users')
-    const adminResource = rootResource.addResource('admin')
-    const productsResource = rootResource.addResource('products')
-    const authResource = rootResource.addResource('auth')
+    const usersResource = rootResource.addResource('users');
+    const adminResource = rootResource.addResource('admin');
+    const productsResource = rootResource.addResource('products');
+    const authResource = rootResource.addResource('auth');
+
+    // Common method options
+    const getMethodOptions: apigateway.MethodOptions = {
+        methodResponses,
+        requestValidator: paramValidator,
+        apiKeyRequired: false,
+    };
+
+    const postMethodOptions: apigateway.MethodOptions = {
+        methodResponses,
+        requestValidator: bodyValidator,
+        apiKeyRequired: false,
+    };
+
+    const protectedMethodOptions: apigateway.MethodOptions = {
+        methodResponses,
+        requestValidator: bodyValidator,
+        apiKeyRequired: true,
+    };
 
     // Users Methods
-    usersResource.addMethod('GET', userIntegration, {
-        operationName: "Get All Users",
-        apiKeyRequired: false, // Public
-    });
-
-    usersResource.addMethod('POST', userIntegration, {
-        operationName: "Create User",
-        apiKeyRequired: false, // Public
-    });
+    usersResource.addMethod('GET', userIntegration, getMethodOptions);
+    usersResource.addMethod('POST', userIntegration, postMethodOptions);
 
     // Products Methods
-    productsResource.addMethod('GET', productIntegration, {
-        operationName: "Get All Products",
-        apiKeyRequired: false, // Public
-    });
-
-    productsResource.addMethod('POST', productIntegration, {
-        operationName: "Post Product",
-        apiKeyRequired: false, // Public
-    });
+    productsResource.addMethod('GET', productIntegration, getMethodOptions);
+    productsResource.addMethod('POST', productIntegration, protectedMethodOptions);
 
     const items = productsResource.addResource('{item_id}');
+    items.addMethod('GET', productIntegration, getMethodOptions);
+    items.addMethod('PATCH', productIntegration, protectedMethodOptions);
+    items.addMethod('DELETE', productIntegration, protectedMethodOptions);
 
-    items.addMethod('GET', productIntegration, {
-        operationName: "Get Product By Id",
-        apiKeyRequired: false, // Public
-    });
-
-    items.addMethod('PATCH', productIntegration, {
-        operationName: "Patch Product By Id",
-        apiKeyRequired: false, // Public
-    });
-
-    items.addMethod("DELETE", productIntegration, {
-        operationName: "Delete Product By Id",
-        apiKeyRequired: false, // Public
-    });
-
-    // Auth Methods for Login and Signup
+    // Auth Methods
     const loginResource = authResource.addResource('login');
     const signupResource = authResource.addResource('signup');
-    const meResource = authResource.addResource('me');  // New endpoint for current user data
+    const meResource = authResource.addResource('me');
 
-    loginResource.addMethod('POST', authIntegration, {
-        operationName: "User Login",
-        apiKeyRequired: false, // Public
-    });
-
-    signupResource.addMethod('POST', authIntegration, {
-        operationName: "User Signup",
-        apiKeyRequired: false, // Public
-    });
-
-    meResource.addMethod('GET', authIntegration, {
-        operationName: "Get Current User Info",
-        apiKeyRequired: true, // Requires authentication
-    });
+    loginResource.addMethod('POST', authIntegration, postMethodOptions);
+    signupResource.addMethod('POST', authIntegration, postMethodOptions);
+    meResource.addMethod('GET', authIntegration, protectedMethodOptions);
 
     // Admin Methods
-    adminResource.addMethod('GET', adminIntegration, {
-        operationName: "Get Admin Status",
-        apiKeyRequired: true, // Admin only
-    });
+    adminResource.addMethod('GET', adminIntegration, protectedMethodOptions);
+    adminResource.addMethod('POST', adminIntegration, protectedMethodOptions);
 
-    // Admin - Manage Users
     const usersAdmin = adminResource.addResource('users');
-
-    usersAdmin.addMethod('GET', adminIntegration, {
-        operationName: "Get All Users (Admin)",
-        apiKeyRequired: true, // Admin only
-    });
+    usersAdmin.addMethod('GET', adminIntegration, protectedMethodOptions);
 
     const userAdminItem = usersAdmin.addResource('{user_id}');
+    userAdminItem.addMethod('DELETE', adminIntegration, protectedMethodOptions);
 
-    userAdminItem.addMethod('DELETE', adminIntegration, {
-        operationName: "Delete User By Id (Admin)",
-        apiKeyRequired: true, // Admin only
-    });
-
-    // Admin - Assign User to Admin
-    adminResource.addMethod('POST', adminIntegration, {
-        operationName: "Assign User as Admin",
-        apiKeyRequired: true, // Admin only
-    });
-
-    // API Usageplan
+    // API Usage Plan
     const usageplan = api.addUsagePlan('UsagePlan', {
         name: props.usageplan.name,
         description: props.usageplan.desc,
         apiStages: [{
-          api: api,
-          stage: api.deploymentStage,
+            api: api,
+            stage: api.deploymentStage,
         }],
         quota: {
-          limit: props.usageplan.limit,
-          period: apigateway.Period.DAY,
+            limit: props.usageplan.limit,
+            period: apigateway.Period.DAY,
         },
         throttle: {
-          rateLimit: props.usageplan.rateLimit,
-          burstLimit: props.usageplan.burstLimit,
+            rateLimit: props.usageplan.rateLimit,
+            burstLimit: props.usageplan.burstLimit,
         },
-      });
-  
-    // API Key for authorization
+    });
+
+    // API Key
     const apiKey = api.addApiKey('ApiKey', {
-      apiKeyName: props.apiKey.name,
-      description: props.apiKey.desc,
+        apiKeyName: props.apiKey.name,
+        description: props.apiKey.desc
     });
     
     usageplan.addApiKey(apiKey);
+
+    // Output the API endpoint URL
+    new cdk.CfnOutput(this, 'ApiEndpoint', {
+        value: api.url,
+        description: 'API Gateway endpoint URL',
+    });
   }
 }

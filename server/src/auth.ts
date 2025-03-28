@@ -2,174 +2,162 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { corsHeaders, handleError, handleSuccess, handleOptions, isValidEmail, JWT_SECRET } from './utils';
 
 const dynamodb = new DynamoDB.DocumentClient();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-  'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-};
-
-const isValidEmail = (email: string): boolean => {
-  return email.endsWith('@studenti.polito.it');
-};
+const USERS_TABLE = process.env.USERS_TABLE || 'users';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  console.log('Event:', JSON.stringify(event, null, 2));
+  
   try {
     const path = event.path;
     const method = event.httpMethod;
 
     // Handle OPTIONS requests for CORS
     if (method === 'OPTIONS') {
-      return {
-        statusCode: 200,
-        headers: corsHeaders,
-        body: ''
-      };
+      return handleOptions();
     }
 
     // Login endpoint
     if (path.endsWith('/login') && method === 'POST') {
-      const { email, password } = JSON.parse(event.body || '{}');
+      return {
+        body: 'test',
+        statusCode: 200
+      }    
+      if (!event.body) {
+        return handleError(new Error('Request body is required'), 400);
+      }
+
+      const { email, password } = JSON.parse(event.body);
+      console.log('Login attempt for email:', email);
       
+      if (!email || !password) {
+        return handleError(new Error('Email and password are required'), 400);
+      }
+
       if (!isValidEmail(email)) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'Email must end with @studenti.polito.it' })
-        };
+        return handleError(new Error('Email must end with @studenti.polito.it'), 400);
       }
 
       const params = {
-        TableName: 'users',
+        TableName: USERS_TABLE,
         Key: { email }
       };
 
+      console.log('Querying DynamoDB with params:', JSON.stringify(params));
       const result = await dynamodb.get(params).promise();
+      console.log('DynamoDB result:', JSON.stringify(result));
+      
       const user = result.Item;
 
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return {
-          statusCode: 401,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'Invalid credentials' })
-        };
+      if (!user) {
+        return handleError(new Error('Invalid credentials'), 401);
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      console.log('Password match:', passwordMatch);
+
+      if (!passwordMatch) {
+        return handleError(new Error('Invalid credentials'), 401);
       }
 
       const token = jwt.sign({ email: user.email, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '24h' });
 
-      return {
-        statusCode: 200,
-        headers: corsHeaders,
-        body: JSON.stringify({ token, user: { email: user.email, isAdmin: user.isAdmin } })
-      };
+      // Remove sensitive data before sending response
+      const { password: _, ...userWithoutPassword } = user;
+
+      return handleSuccess({ 
+        message: 'Login successful',
+        token, 
+        user: userWithoutPassword
+      });
     }
 
     // Signup endpoint
     if (path.endsWith('/signup') && method === 'POST') {
-      const { email, password, firstName, lastName, telegramUsername } = JSON.parse(event.body || '{}');
+      console.log('Processing signup request');
+      
+      if (!event.body) {
+        return handleError(new Error('Request body is required'), 400);
+      }
+
+      const { email, password, firstName, lastName, telegramUsername } = JSON.parse(event.body);
+      console.log('Signup attempt for email:', email);
       
       if (!isValidEmail(email)) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'Email must end with @studenti.polito.it' })
-        };
+        return handleError(new Error('Email must end with @studenti.polito.it'), 400);
       }
       
       // Check if user already exists
       const existingUser = await dynamodb.get({
-        TableName: 'users',
+        TableName: USERS_TABLE,
         Key: { email }
       }).promise();
 
       if (existingUser.Item) {
-        return {
-          statusCode: 400,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'User already exists' })
-        };
+        return handleError(new Error('User already exists'), 400);
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
       
+      const newUser = {
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        telegramUsername,
+        isAdmin: false,
+        createdAt: Date.now()
+      };
+
+      console.log('Creating new user:', { ...newUser, password: '[REDACTED]' });
+      
       await dynamodb.put({
-        TableName: 'users',
-        Item: {
-          email,
-          password: hashedPassword,
-          firstName,
-          lastName,
-          telegramUsername,
-          isAdmin: false,
-          createdAt: Date.now()
-        }
+        TableName: USERS_TABLE,
+        Item: newUser
       }).promise();
 
-      return {
-        statusCode: 201,
-        headers: corsHeaders,
-        body: JSON.stringify({ message: 'User created successfully' })
-      };
+      return handleSuccess({ message: 'User created successfully' }, 201);
     }
 
     // Get current user endpoint
     if (path.endsWith('/me') && method === 'GET') {
+      console.log('Processing get current user request');
+      
       const token = event.headers.Authorization?.split(' ')[1];
       
       if (!token) {
-        return {
-          statusCode: 401,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'No token provided' })
-        };
+        return handleError(new Error('No token provided'), 401);
       }
 
       try {
         const decoded = jwt.verify(token, JWT_SECRET) as { email: string };
         const params = {
-          TableName: 'users',
+          TableName: USERS_TABLE,
           Key: { email: decoded.email }
         };
 
+        console.log('Querying DynamoDB for current user:', decoded.email);
         const result = await dynamodb.get(params).promise();
         const user = result.Item;
 
         if (!user) {
-          return {
-            statusCode: 404,
-            headers: corsHeaders,
-            body: JSON.stringify({ message: 'User not found' })
-          };
+          return handleError(new Error('User not found'), 404);
         }
 
-        return {
-          statusCode: 200,
-          headers: corsHeaders,
-          body: JSON.stringify({ user: { email: user.email, isAdmin: user.isAdmin } })
-        };
+        // Remove sensitive data
+        const { password: _, ...userWithoutPassword } = user;
+
+        return handleSuccess({ user: userWithoutPassword });
       } catch (error) {
-        return {
-          statusCode: 401,
-          headers: corsHeaders,
-          body: JSON.stringify({ message: 'Invalid token' })
-        };
+        console.error('Token verification error:', error);
+        return handleError(new Error('Invalid token'), 401);
       }
     }
 
-    return {
-      statusCode: 404,
-      headers: corsHeaders,
-      body: JSON.stringify({ message: 'Not found' })
-    };
+    return handleError(new Error('Not found'), 404);
   } catch (error) {
-    console.error('Error:', error);
-    return {
-      statusCode: 500,
-      headers: corsHeaders,
-      body: JSON.stringify({ message: 'Internal server error' })
-    };
+    return handleError(error);
   }
 }; 

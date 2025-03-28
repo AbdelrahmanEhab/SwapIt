@@ -25,9 +25,8 @@ async function fetchProducts() {
     return response.json()
 }
 
-function Products(props: searchProps) {
+const Products : React.FC<searchProps> = ({search, category}) => {
 
-    const {search, category} = props
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(true)
@@ -111,17 +110,17 @@ function Products(props: searchProps) {
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center items-center mt-5 w-full relative">
                         { filter === "Default" &&
                             [...filteredProducts].map(p => (
-                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
+                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price} description={p.description}/>
                             ))
                         }
                         { filter === "Asc" &&
                             [...filteredProducts].sort((a, b) => a.price - b.price).map(p => (
-                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
+                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price} description={p.description}/>
                             ))
                         }
                         { filter === "Desc" &&
                             [...filteredProducts].sort((a, b) => b.price - a.price).map(p => (
-                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price}/>
+                                <Card key={p.id} id={p.id} img={p.image} title={p.title} price={p.price} description={p.description}/>
                             ))
                         }
                         {
