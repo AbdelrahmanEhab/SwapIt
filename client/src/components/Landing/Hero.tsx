@@ -6,7 +6,8 @@ function LandingHero() {
 
     return (
         <>
-        <div className={`w-full h-[70vh] flex justify-center items-center bg-cover py-25 bg-[url(src/assets/imgs/${torino})] bg-center`}>
+            <div className={`relative w-full h-[70vh] flex justify-center items-center py-25 overflow-hidden`}>
+                <img src={torino} className="absolute h-full w-full min-w-[400px] -z-10 object-cover"/>
                 <div className="max-w-[1240px] w-full flex flex-col justify-center items-center mx-10 gap-5">
                     <h1 className="lg:text-6xl text-5xl text-white font-bold bg-white/1 backdrop-blur-[.5px] rounded-4xl">
                         <ReactTyped 
