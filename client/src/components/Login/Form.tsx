@@ -37,11 +37,14 @@ function LoginForm() {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                           });
+                          console.log(res);
+
                     }
                     catch (e) {
                         setLoading(false);
                         setValidationMessage('Incorrect Email or Password!')
                         resolve(null);
+                        console.log(e)
                     }
           }, 3000)
         );
@@ -74,11 +77,14 @@ function LoginForm() {
                                             method: "POST",
                                             headers: { "Content-Type": "application/json" },
                                           });
+                                          console.log(res);
+
                                     }
                                     catch (e) {
                                         setLoading(false);
                                         setValidationMessage('Email Sent Successfully')
                                         resolve(null);
+                                        console.log(e);
                                     }
                             }, 3000)
                             );

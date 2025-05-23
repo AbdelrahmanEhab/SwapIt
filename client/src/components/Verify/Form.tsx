@@ -19,11 +19,13 @@ function VerifyForm() {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                           });
+                        console.log(res);
                     }
                     catch (e) {
                         setValidationMessage('Incorrect Verification Code!')
                         setVerifyLoading(false)
                         resolve(null)
+                        console.log(e);
                     }
                 }, 2000)
             })
@@ -38,11 +40,13 @@ function VerifyForm() {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                           });
+                          console.log(res);
                     }
                     catch (e) {
                         setValidationMessage('Verification Code Sent Successfully')
                         setResendLoading(false)
                         resolve(null)
+                        console.log(e);
                     }
                     
                 }, 3000)

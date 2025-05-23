@@ -25,7 +25,7 @@ async function fetchProducts() {
     return response.json()
 }
 
-const Products : React.FC<searchProps> = ({search, category}) => {
+const Products : React.FC<searchProps> = ({search}) => {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])

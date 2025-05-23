@@ -29,6 +29,7 @@ function Details() {
             setPrice(product.price)
             setImages([product.image, product.image, product.image, product.image])
             setLoading(false)
+            setUsername('')
         }
         getProduct()
     }, [id])

@@ -5,10 +5,10 @@ import Landing from './pages/Landing'
 import SignUp from './pages/Signup'
 import Login from './pages/Login'
 import Verify from './pages/Verify'
-import Home from './pages/Home'
-import Product from './pages/Product'
-import User from './pages/User'
-import Post from './pages/Post'
+// import Home from './pages/Home'
+// import Product from './pages/Product'
+// import User from './pages/User'
+// import Post from './pages/Post'
 import { Navigate } from "react-router-dom";
 
 function App() {

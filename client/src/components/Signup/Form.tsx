@@ -45,11 +45,14 @@ function SignUpForm() {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                           });
+                          console.log(res);
                     }
                     catch (e) {
                         setLoading(false);
                         nav(`/verify?email=${email.split('@')[0]}`)
                         resolve(null);
+                        console.log(e);
+
                     }
           }, 3000)
         );
