@@ -1,11 +1,12 @@
 import { ReactTyped } from "react-typed"
 import { Link } from "react-router-dom"
+import torino from '../../assets/imgs/torino.jpg'
 
 function LandingHero() {
 
     return (
         <>
-            <div className="w-full h-[70vh] flex justify-center items-center bg-cover py-25 bg-[url(src/assets/imgs/torino.jpg)] bg-center">
+        <div className={`w-full h-[70vh] flex justify-center items-center bg-cover py-25 bg-[url(src/assets/imgs/${torino})] bg-center`}>
                 <div className="max-w-[1240px] w-full flex flex-col justify-center items-center mx-10 gap-5">
                     <h1 className="lg:text-6xl text-5xl text-white font-bold bg-white/1 backdrop-blur-[.5px] rounded-4xl">
                         <ReactTyped 
