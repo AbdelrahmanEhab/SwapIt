@@ -23,7 +23,7 @@ function Details() {
     useEffect(() => {
         async function getProduct() {
             setLoading(true)
-            const product = await fetchProduct(id)
+            const product = await fetchProduct(id ?? '1')
             setTitle(product.title)
             setDescription(product.description)
             setPrice(product.price)
