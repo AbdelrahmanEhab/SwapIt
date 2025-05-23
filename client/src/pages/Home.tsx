@@ -7,6 +7,7 @@ function HomePage() {
     const [category, setCategory] = useState<string>('all')
     const [search, setSearch] = useState<string>('')
 
+
     return (
         <>
         <div className='flex flex-col  items-center min-h-screen'>

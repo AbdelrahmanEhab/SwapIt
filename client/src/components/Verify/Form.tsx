@@ -1,11 +1,53 @@
-import { Link, NavigateFunction, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useState } from "react"
+import { ClipLoader } from "react-spinners";
 
 
 function VerifyForm() {
 
     const [code, setCode] = useState<string>('')
-    const nav : NavigateFunction = useNavigate()
+    const [validationMessage, setValidationMessage] = useState<string>('')
+    const [verifyLoading, setVerifyLoading] = useState<boolean>(false)
+    const [resendLoading, setResendLoading] = useState<boolean>(false)
+
+    const handleVerification = async () => {
+            setVerifyLoading(true);
+            await new Promise(resolve => {
+                setTimeout(async () => {
+                    try {
+                        const res = await fetch("https://swapit/api/v1/verify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                          });
+                    }
+                    catch (e) {
+                        setValidationMessage('Incorrect Verification Code!')
+                        setVerifyLoading(false)
+                        resolve(null)
+                    }
+                }, 2000)
+            })
+    }
+
+    const handleResend = async () => {
+            setResendLoading(true);
+            await new Promise(resolve => {
+                setTimeout(async () => {
+                    try {
+                        const res = await fetch("https://swapit/api/v1/resend", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                          });
+                    }
+                    catch (e) {
+                        setValidationMessage('Verification Code Sent Successfully')
+                        setResendLoading(false)
+                        resolve(null)
+                    }
+                    
+                }, 3000)
+            })
+    }
 
     return (
         <>
@@ -18,12 +60,30 @@ function VerifyForm() {
                         <input type='text' id='code' placeholder='Enter verification code' className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={code} onChange={(e) => setCode(e.target.value)}/>
                     </div>
 
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 font-bold cursor-pointer w-full" onClick={() => nav('/home?category=all')}>
-                       Verify
+                    {
+                        validationMessage !== '' && (
+                            <>
+                                <p className={`${validationMessage === 'Verification Code Sent Successfully' ? 'text-green-600' : 'text-red-600'} text-lg`}>{validationMessage}</p>
+                            </>
+                        )
+                    }
+
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 duration-200 font-bold cursor-pointer w-full" onClick={handleVerification}>
+                    { verifyLoading ? (
+                            <ClipLoader
+                                color={"white"}
+                                loading={verifyLoading}
+                                size={15}
+                            />) : "Verify"}
                     </button>
 
-                    <button className="px-10 py-2 bg-white text-blue-800 outline-1 outline-blue-800 font-bold cursor-pointer w-full">
-                       Resend Code
+                    <button className="px-10 py-2 bg-white text-blue-800 outline-1 outline-blue-800 font-bold cursor-pointer w-full" onClick={handleResend}>
+                    { resendLoading ? (
+                            <ClipLoader
+                                color={"##1D4ED8"}
+                                loading={resendLoading}
+                                size={15}
+                            />) : "Resend Code"}
                     </button>
                     
                     <div className="flex flex-col justify-center items-center underline text-gray-500">

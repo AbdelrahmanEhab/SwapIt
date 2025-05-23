@@ -1,7 +1,9 @@
-import { Link, NavigateFunction, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { ClipLoader } from "react-spinners";
+
 
 
 function LoginForm() {
@@ -9,7 +11,42 @@ function LoginForm() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [showPass, setshowPass] = useState<boolean>(false)
-    const nav : NavigateFunction = useNavigate()
+    const [validationMessage, setValidationMessage] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
+
+
+    const handleLogin = async () => {
+        if (email === '' && password === '') {
+            setValidationMessage('Enter Your Email and Password!')
+        }
+        else if (email === '') {
+            setValidationMessage('Email Cannot be empty!')
+        }
+        else if (password === '') {
+            setValidationMessage('Password Cannot be empty!')
+        }
+        else if (!email.endsWith('@studenti.polito.it') || email.split('@')[0].length === 0) {
+            setValidationMessage("Invalid University Email!")
+        }
+        else {
+            setLoading(true);
+            await new Promise((resolve) =>
+                setTimeout(async () => {
+                    try {
+                        const res = await fetch("https://swapit/api/v1/login", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                          });
+                    }
+                    catch (e) {
+                        setLoading(false);
+                        setValidationMessage('Incorrect Email or Password!')
+                        resolve(null);
+                    }
+          }, 3000)
+        );
+        }
+    }
 
     return (
         <>
@@ -24,10 +61,44 @@ function LoginForm() {
                         <label htmlFor="password" className="text-xl">Password</label>
                         <input type={!showPass ? "password" : 'text'} id='password' placeholder="••••••••••" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
-                        <Link to={''} className="mt-3 underline text-blue-800">Forgot Password?</Link>
+                        <Link to={''} className="mt-3 underline text-blue-800" onClick={async () => {
+                            if (!email.endsWith('@studenti.polito.it') || email.split('@')[0].length === 0) {
+                                setValidationMessage("Invalid University Email!")
+                            }
+                            else  {
+                                setLoading(true);
+                                await new Promise((resolve) =>
+                                setTimeout(async () => {
+                                    try {
+                                        const res = await fetch("https://swapit/api/v1/forgotpassword", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                          });
+                                    }
+                                    catch (e) {
+                                        setLoading(false);
+                                        setValidationMessage('Email Sent Successfully')
+                                        resolve(null);
+                                    }
+                            }, 3000)
+                            );
+                            }
+                        }}>Forgot Password?</Link>
                     </div>
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:bg-white hover:scale-105 duration-200 hover:text-blue-800 hover:outline-1 hover:outline-blue-800 text-xl font-bold cursor-pointer w-50" onClick={() => nav(`/verify?email=${email.split('@')[0]}`)}>
-                       Log In
+                    {
+                        validationMessage !== '' && (
+                            <>
+                                <p className={`${validationMessage === 'Email Sent Successfully' ? 'text-green-600' : 'text-red-600'} text-lg`}>{validationMessage}</p>
+                            </>
+                        )
+                    }
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:bg-white hover:scale-105 duration-200 hover:text-blue-800 hover:outline-1 hover:outline-blue-800 text-xl font-bold cursor-pointer w-50" onClick={handleLogin}>
+                       { loading ? (
+                            <ClipLoader
+                                color={"white"}
+                                loading={loading}
+                                size={15}
+                            />) : "Log In"}
                     </button>
                     <div className="flex flex-col justify-between items-center gap-5">
                         <div className="flex sm:flex-row flex-col items-center justify-center gap-1">

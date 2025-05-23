@@ -2,6 +2,8 @@ import { Link, NavigateFunction, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { ClipLoader } from "react-spinners";
+
 
 function SignUpForm() {
 
@@ -12,6 +14,47 @@ function SignUpForm() {
     const [password, setPassword] = useState<string>('')
     const [showPass, setshowPass] = useState<boolean>(false)
     const nav : NavigateFunction = useNavigate();
+    const [validationMessage, setValidationMessage] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleSignup = async () => {
+        if (firstName === '' ) {
+            setValidationMessage('Enter Your First Name!')
+        }
+        else if (lastName === '') {
+            setValidationMessage('Enter Your Last Name!')
+        }
+        else if (telegramUsername === '') {
+            setValidationMessage('Enter Your Telegram Username!')
+        }
+        else if (email === '') {
+            setValidationMessage('Enter Your University Email!')
+        }
+        else if (!email.endsWith('@studenti.polito.it') || email.split('@')[0].length === 0) {
+            setValidationMessage("Invalid University Email!")
+        }
+        else if (password === '' || password.length < 0) {
+            setValidationMessage('Enter Your a Valid Password! (8-16 charachters)')
+        }
+        else {
+            setLoading(true);
+            await new Promise((resolve) =>
+                setTimeout(async () => {
+                    try {
+                        const res = await fetch("https://swapit/api/v1/signup", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                          });
+                    }
+                    catch (e) {
+                        setLoading(false);
+                        nav(`/verify?email=${email.split('@')[0]}`)
+                        resolve(null);
+                    }
+          }, 3000)
+        );
+        }
+    }
 
     return (
         <>
@@ -46,9 +89,22 @@ function SignUpForm() {
                         <input type={!showPass ? "password" : 'text'} id="password" placeholder="••••••••••" className="border-1 border-gray-500 px-4 py-2 w-full" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         {!showPass ? <IoEyeOutline size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/> : <FaRegEyeSlash size={20} className="absolute right-4 top-10 text-gray-500" onClick={() => setshowPass(!showPass)}/>}
                     </div>
-
-                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-105 duration-200 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 text-xl font-bold cursor-pointer w-50" onClick={() => nav(`/verify?email=${email.split('@')[0]}`)}>Sign Up</button>
-                    
+                    {
+                        validationMessage !== '' && (
+                            <>
+                                <p className={`${validationMessage === 'Email Sent Successfully' ? 'text-green-600' : 'text-red-600'} text-lg`}>{validationMessage}</p>
+                            </>
+                        )
+                    }
+                    <button className="bg-blue-800 text-white px-10 py-2 hover:scale-105 duration-200 hover:bg-white hover:text-blue-800 hover:outline-1 hover:outline-blue-800 text-xl font-bold cursor-pointer w-50" onClick={handleSignup}>
+                        { loading ? (
+                            <ClipLoader
+                                color={"white"}
+                                loading={loading}
+                                size={15}
+                            />) : "Sign Up"}
+                        </button>
+                    {/* () => nav(`/verify?email=${email.split('@')[0]}`) */}
                     <div className="flex flex-col justify-between items-center gap-5">
                         <div className="flex sm:flex-row flex-col items-center justify-center gap-1">
                             <p>Already have an account?</p>

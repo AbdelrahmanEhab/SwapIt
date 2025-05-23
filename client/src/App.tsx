@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import Product from './pages/Product'
 import User from './pages/User'
 import Post from './pages/Post'
+import { Navigate } from "react-router-dom";
 
 function App() {
 
@@ -20,10 +21,10 @@ function App() {
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/verify' element={<Verify/>}/>
-      <Route path='/home' element={<Home/>}/>
-      <Route path='/product/:id' element={<Product/>}/>
-      <Route path='/user/:username' element={<User/>}/>
-      <Route path='/post' element={<Post/>}/>
+      <Route path='/home' element={<Navigate to="/" replace />}/>
+      <Route path='/product/:id' element={<Navigate to="/" replace />}/>
+      <Route path='/user/:username' element={<Navigate to="/" replace />}/>
+      <Route path='/post' element={<Navigate to="/" replace />}/>
       <Route path='*'/>
     </Routes>
     </>
